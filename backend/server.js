@@ -4,16 +4,16 @@ const Ticket = require('./src/models/Ticket');
 const User = require('./src/models/User');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 5000;
-
 async function iniciarServidor() {
   try {
     await sequelize.authenticate();
-    console.log('Conexión a la base de datos establecida con éxito.');
-    await sequelize.sync({ force: true });
-    console.log('Esquema de base de datos recreado correctamente.');
+    console.log('Conexión a la base de datos establecida.');
+
+    await sequelize.sync();
+    console.log('Base de datos sincronizada.');
 
     const totalTickets = await Ticket.count();
+
     if (totalTickets === 0) {
       await Ticket.bulkCreate([
         {
@@ -38,7 +38,6 @@ async function iniciarServidor() {
           descripcion: 'Se resolvió el acceso para el equipo de operaciones.'
         }
       ]);
-      console.log('Datos iniciales cargados en la base de datos.');
     }
 
     const demoUsers = [
@@ -69,22 +68,19 @@ async function iniciarServidor() {
     ];
 
     for (const userData of demoUsers) {
-      const existingUser = await User.findOne({ where: { email: userData.email } });
-      if (!existingUser) {
-        await User.create(userData);
-      }
+      const [user] = await User.findOrCreate({
+        where: { email: userData.email },
+        defaults: userData
+      });
     }
 
-    const createdUsers = await User.findAll({ where: { email: demoUsers.map((u) => u.email) } });
-    if (createdUsers.length > 0) {
-      console.log('Usuarios de prueba creados o verificados.');
-    }
+    console.log('Usuarios de prueba verificados.');
 
-    app.listen(PORT, () => {
-      console.log(`Servidor corriendo en el puerto ${PORT}`);
-    });
   } catch (error) {
-    console.error('No se pudo conectar a la base de datos:', error);
+    console.error('Error al iniciar la base de datos:', error);
   }
 }
+
 iniciarServidor();
+
+module.exports = app;
