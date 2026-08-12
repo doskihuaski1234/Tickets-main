@@ -1,0 +1,21 @@
+/* 4. Área de Contenido */
+.app-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  /* IMPORTANTE: Esto asegura que el contenido ocupe el espacio disponible */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 6. Mapa (Corregido para ser visible) */
+.ticket-map-container {
+  width: 100%;
+  height: 580px; /* Altura fija explícita para que React/Mapbox no fallen */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border: 1px solid #cbd5e1;
+  position: relative;
+  overflow: hidden;
+  background-color: #1e293b; /* Color de fondo mientras carga */
+}
