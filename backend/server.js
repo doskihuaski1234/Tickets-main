@@ -80,7 +80,12 @@ async function iniciarServidor() {
     console.error('Error al iniciar la base de datos:', error);
   }
 }
-
 iniciarServidor();
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor backend ejecutándose en http://localhost:${PORT}`);
+});
 
 module.exports = app;

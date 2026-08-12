@@ -28,3 +28,7 @@ dist-ssr
 # Ignore editor and tooling artifacts
 .vscode/
 .snapshots/
+
+# Environment variables
+.env
+backend/.env
